@@ -1,4 +1,3 @@
-
 int size = 40;
 int[][] grid = new int[25][25];
 
@@ -99,19 +98,19 @@ void printIntArray(int[][] arr)
 
 void keyPressed()
 {
-  if (key == 'w')
+  if (keyCode == UP)
   {
     player.y--;
   }
-  if (key == 'a')
+  if (keyCode == LEFT)
   {
     player.x--;
   }
-  if (key == 's')
+  if (keyCode == DOWN)
   {
     player.y++;
   }
-  if (key == 'd')
+  if (keyCode == RIGHT)
   {
     player.x++;
   }
