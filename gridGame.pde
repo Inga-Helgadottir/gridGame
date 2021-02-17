@@ -36,7 +36,6 @@ void drawBoard()
     for (int y = 0; y < grid[0].length; y++)
     {
       fill(getColorFromType(grid[x][y]));
-
       rect(x * size, y * size, size, size);
     }
   }
@@ -47,8 +46,13 @@ void updateEntities()
   try {
     grid[player.x][player.y] = player.type;
   }
-  catch(ArrayIndexOutOfBoundsException e) {
+  catch(ArrayIndexOutOfBoundsException e) {//player is outside the grid
     println("You can´t move that way " + e);
+    if(player.x < 0){ //if the player goes outside the grid
+      player.x = 0;
+    }else{
+      player.y = 0;
+    }
   }
     player.takeDamage();
 }
@@ -82,17 +86,12 @@ color getColorFromType(int type)
 
 void printIntArray(int[][] arr) 
 {
-  System.out.println("");
-  System.out.println("");
-  System.out.println("");
   for (int x = 0; x < arr.length; x++)
   {
     for (int y = 0; y < arr[0].length; y++) 
     {
-
       System.out.print(arr[x][y] + ", ");
     }
-    println();
   }
 }
 
