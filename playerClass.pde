@@ -16,7 +16,7 @@ class Player
 
   void takeDamage()
   {
-    health = health - 1;//player keeps loosing health as long as they are in the same place
+    health--;//player keeps loosing health as long as they are in the same place
   }
 
   void eat() {
