@@ -11,10 +11,6 @@ class Enemy
     this.y = y;
     this.player = player;
   }
-  
-  void update() {
-    println("haha");
-  }
 
   void MoveTowardsPlayer()
   {
@@ -22,13 +18,17 @@ class Enemy
     int yDistance = Math.abs(player.y - y);
 
     // random chance (~25% chance) for at enemy flytter sig i en tilfældig retning. 
-
-    if (xDistance > yDistance)
-    {
-      // opdatér x værdi til at rykke ét felt nærmere playeren!
-    } else
-    {
-      // opdatér y værdi til at rykke ét felt nærmere playeren!
+    double d = random(100);
+    if (d < 1) {
+      if (xDistance > yDistance && player.x > x) {
+        this.x++;
+      } else if (xDistance > yDistance && player.x < x) {
+        this.x--;
+      } else if (yDistance > xDistance && player.y > y) {
+        this.y++;
+      } else if (yDistance > xDistance && player.y < y) {
+        this.y--;
+      }
     }
   }
 }
