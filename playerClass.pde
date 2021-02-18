@@ -10,17 +10,16 @@ class Player
   {
     this.x = x;
     this.y = y;
-    health = 1000;//if there is time later - change how much is taken from the score on inpact
+    health = 100;
   }
 
 
   void takeDamage()
   {
-    health--;//player keeps loosing health as long as they are in the same place
+    health --;
   }
 
   void eat() {
     score++;
-    noLoop();
   }
 }
