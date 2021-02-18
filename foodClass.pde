@@ -11,7 +11,4 @@ class Food
     this.y = y;
     this.player = player;
   }
-  void update() {
-    println("haha");
-  }
 }
