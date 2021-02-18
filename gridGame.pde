@@ -1,9 +1,12 @@
 /*
 To do:
- make food run away 
+ find out why green moves differently than red
+ get green to dissapear when blue eats it
  fix score
+ fix health
  check if i can make it a 25% chance that enemy and food moves
  */
+//før du kan rykke playeren skal du klikke på vinduet
 //enemies rykker sig kun efter at du har klikket på en af pilerne 
 //jeg ændrede keyPressed til at kigge på piler fordi det er nemmere for mig
 
@@ -42,8 +45,6 @@ void draw()
     clearBoard(); 
     updateEntities();
     drawBoard();
-    //resolveCollisions();
-    //updateEnemies();
   } else {//if the game is over
     background(0);
     textSize(60);
@@ -90,6 +91,7 @@ void updateEntities()
     }
     for (int i = 0; i < foods.size(); i++) {
       grid[foods.get(i).x][foods.get(i).y] = foods.get(i).type;
+      updateFoods();
       if (grid[player.x][player.y] == grid[foods.get(i).x][foods.get(i).y]) {
         resolveCollisions();
       }
@@ -118,6 +120,19 @@ void updateEntities()
         enemies.get(i).y = 24;
       }
       updateEnemies();
+    }
+
+    for (int i = 0; i < foods.size(); i++) {//if the enemy goes outside the grid
+      if (foods.get(i).x < 0) {
+        foods.get(i).x = 0;
+      } else if (foods.get(i).x > 24) {
+        foods.get(i).x = 24;
+      } else if (foods.get(i).y < 0) {
+        foods.get(i).y = 0;
+      } else if (foods.get(i).y > 24) {
+        foods.get(i).y = 24;
+      }
+      updateFoods();
     }
   }
 }
@@ -165,12 +180,15 @@ void updateEnemies() {
   }
 }
 
+void updateFoods(){
+  for (int i = 0; i < foods.size(); i++) {
+    foods.get(i).MoveAwayFromPlayer();
+  }
+}
+
 void resolveCollisions() {      
   for (int i = 0; i < foods.size(); i++) {
     if (grid[foods.get(i).x][foods.get(i).y] == grid[player.x][player.y]) {
-      //hvis player går ind i food, rykker alle foods sig, fix if theres time
-      foods.get(i).x = int(random(0, 24));
-      foods.get(i).y = int(random(0, 24));
       player.eat();//increase score
     }
   }
