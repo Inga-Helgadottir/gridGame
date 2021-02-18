@@ -1,29 +1,43 @@
+import java.util.ArrayList;//fik hjælp til denne del 
+
 int size = 40;
 int[][] grid = new int[25][25];
-boolean [] foodEatenArray = {false, false, false, false};
 
 Player player;
-Enemy enemy1;
-Enemy enemy2;
-Enemy enemy3;
-Enemy enemy4;
-Food food1;
-Food food2;
-Food food3;
-Food food4;
+ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+ArrayList<Food> foods = new ArrayList<Food>();
+//Enemy enemy1;
+//Enemy enemy2;
+//Enemy enemy3;
+//Enemy enemy4;
+//Food food1;
+//Food food2;
+//Food food3;
+//Food food4;
 
 void setup()
 {
   size(1001, 1001);
   player = new Player(0, 0);
-  enemy1 = new Enemy(22, 23, player);
-  enemy2 = new Enemy(23, 23, player);
-  enemy3 = new Enemy(23, 24, player);
-  enemy4 = new Enemy(24, 24, player);
-  food1 = new Food(1, 1, player);//int(random(0, 24)), int(random(0, 24)), player);
-  food2 = new Food(int(random(0, 24)), int(random(0, 24)), player);
-  food3 = new Food(int(random(0, 24)), int(random(0, 24)), player);
-  food4 = new Food(int(random(0, 24)), int(random(0, 24)), player);
+  enemies.add(new Enemy(22, 23, player));
+  enemies.add(new Enemy(23, 23, player));
+  enemies.add(new Enemy(23, 24, player));
+  enemies.add(new Enemy(24, 24, player));
+
+  foods.add(new Food(1, 1, player));
+  foods.add(new Food(int(random(0, 24)), int(random(0, 24)), player));
+  foods.add(new Food(int(random(0, 24)), int(random(0, 24)), player));
+  foods.add(new Food(int(random(0, 24)), int(random(0, 24)), player));
+
+  clearBoard();
+  //enemy1 = new Enemy(22, 23, player);
+  //enemy2 = new Enemy(23, 23, player);
+  //enemy3 = new Enemy(23, 24, player);
+  //enemy4 = new Enemy(24, 24, player);
+  //food1 = new Food(1, 1, player);//int(random(0, 24)), int(random(0, 24)), player);
+  //food2 = new Food(int(random(0, 24)), int(random(0, 24)), player);
+  //food3 = new Food(int(random(0, 24)), int(random(0, 24)), player);
+  //food4 = new Food(int(random(0, 24)), int(random(0, 24)), player);
 }
 
 void draw()
@@ -64,15 +78,31 @@ void updateEntities()
 {
   try {
     grid[player.x][player.y] = player.type;
-    grid[enemy1.x][enemy1.y] = enemy1.type;
-    grid[enemy2.x][enemy2.y] = enemy2.type;
-    grid[enemy3.x][enemy3.y] = enemy3.type;
-    grid[enemy4.x][enemy4.y] = enemy4.type;
+    for (int i = 0; i < enemies.size(); i++) {
+      grid[enemies.get(i).x][enemies.get(i).y] = enemies.get(i).type;
+    }
+    for (int i = 0; i < foods.size(); i++) {
+      grid[foods.get(i).x][foods.get(i).y] = foods.get(i).type;
+    }
+    
+    //for(int i = 0; i < enemies.size(); i++){
+    //  enemies.get(i).update();
+    //}
+     for(int i = 0; i < foods.size(); i++){
+      foods.get(i).remove(foods.get(i));
+    }
+    
+    resolveCollisions();
+   // player.update();--------------------------------------
+    //grid[enemy1.x][enemy1.y] = enemy1.type;
+    //grid[enemy2.x][enemy2.y] = enemy2.type;
+    //grid[enemy3.x][enemy3.y] = enemy3.type;
+    //grid[enemy4.x][enemy4.y] = enemy4.type;
 
-    grid[food1.x][food1.y] = food1.type;
-    grid[food2.x][food2.y] = food2.type;
-    grid[food3.x][food3.y] = food3.type;
-    grid[food4.x][food4.y] = food4.type;
+    //grid[food1.x][food1.y] = food1.type;
+    //grid[food2.x][food2.y] = food2.type;
+    //grid[food3.x][food3.y] = food3.type;
+    //grid[food4.x][food4.y] = food4.type;
   }
   catch(ArrayIndexOutOfBoundsException e) {//player is outside the grid
     println("You can´t move that way " + e);
@@ -108,9 +138,6 @@ color getColorFromType(int type)
   case 3: 
     c = color(0, 255, 0);//food
     break;
-  case 4: 
-    c = color (0, 255, 255);
-    break;
   default:
     c = color(127);
     break;
@@ -133,6 +160,59 @@ void printIntArray(int[][] arr)
 //  enemy1.MoveTowardsPlayer();
 //}
 
+void resolveCollisions() {
+  
+  for(int i = 0; i < foods.size(); i++){
+    if(player.collidesWith((foods.get(i)))){
+      foods.remove(i);
+    }
+  }
+  //float pX = player.x;
+  //float pY = player.y;
+
+//  float e1X = enemy1.x;
+//  float e1Y = enemy1.y;
+//  float e2X = enemy2.x;
+//  float e2Y = enemy2.y;
+//  float e3X = enemy3.x;
+//  float e3Y = enemy3.y;
+//  float e4X = enemy4.x;
+//  float e4Y = enemy4.y;
+
+//  float f1X = food1.x;
+//  float f1Y = food1.y;
+//  float f2X = food2.x;
+//  float f2Y = food2.y;
+//  float f3X = food3.x;
+//  float f3Y = food3.y;
+//  float f4X = food4.x;
+//  float f4Y = food4.y;
+
+//  if (pX == e1X && pY == e1Y 
+//    || pX == e2X && pY == e2Y 
+//    || pX == e3X && pY == e3Y
+//    || pX == e4X && pY == e4Y) {
+//    player.takeDamage();
+//  } else if (pX == f1X && pY == f1Y || pX == f2X && pY == f2Y || pX == f3X && pY == f3Y || pX == f4X && pY == f4Y) {
+//    println("hihi");
+//  }
+  /*else if (pX == f1X && pY == f1Y){
+   f1X = int(random(0, 24));
+   f1Y = int(random(0, 24));
+   } else if (pX == f2X && pY == f2Y){
+   f2X = int(random(0, 24));
+   f2Y = int(random(0, 24));
+   } else if (pX == f3X && pY == f3Y){
+   f3X = int(random(0, 24));
+   f3Y = int(random(0, 24));
+   } else if (pX == f4X && pY == f4Y){
+   f4X = int(random(0, 24));
+   f4Y = int(random(0, 24));
+   
+   } */
+  //player.eat();
+}
+
 void isGameOver() {
   if (player.health <= -1) {
     background(0);
@@ -141,41 +221,6 @@ void isGameOver() {
     text("Game over!", 1001/3, 1001/2);
   }
 } 
-
-void resolveCollisions() {
-  float pX = player.x;
-  float pY = player.y;
-
-  float e1X = enemy1.x;
-  float e1Y = enemy1.y;
-  float e2X = enemy2.x;
-  float e2Y = enemy2.y;
-  float e3X = enemy3.x;
-  float e3Y = enemy3.y;
-  float e4X = enemy4.x;
-  float e4Y = enemy4.y;
-
-  float f1X = food1.x;
-  float f1Y = food1.y;
-  float f2X = food2.x;
-  float f2Y = food2.y;
-  float f3X = food3.x;
-  float f3Y = food3.y;
-  float f4X = food4.x;
-  float f4Y = food4.y;
-
-  if (pX == e1X && pY == e1Y 
-    || pX == e2X && pY == e2Y 
-    || pX == e3X && pY == e3Y
-    || pX == e4X && pY == e4Y) {
-    player.takeDamage();
-  } else if (pX == f1X && pY == f1Y 
-    || pX == f2X && pY == f2Y
-    || pX == f3X && pY == f3Y
-    || pX == f4X && pY == f4Y) {
-    player.eat();
-  }
-}
 
 void keyPressed()
 {
@@ -195,7 +240,7 @@ void keyPressed()
   {
     player.x++;
   }
-  if(player.health <= -1 && keyCode == ENTER){
+  if (player.health <= -1 && keyCode == ENTER) {
     player.health = 1000;
     player.score = 0;
     player.x = 0;
