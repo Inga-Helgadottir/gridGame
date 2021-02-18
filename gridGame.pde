@@ -1,5 +1,6 @@
 int size = 40;
 int[][] grid = new int[25][25];
+boolean [] foodEatenArray = {false, false, false, false};
 
 Player player;
 Enemy enemy1;
@@ -19,10 +20,10 @@ void setup()
   enemy2 = new Enemy(23, 23, player);
   enemy3 = new Enemy(23, 24, player);
   enemy4 = new Enemy(24, 24, player);
-  food1 = new Food(int(random(0, 24)), int(random(0, 24)));
-  food2 = new Food(int(random(0, 24)), int(random(0, 24)));
-  food3 = new Food(int(random(0, 24)), int(random(0, 24)));
-  food4 = new Food(int(random(0, 24)), int(random(0, 24)));
+  food1 = new Food(1, 1, player);//int(random(0, 24)), int(random(0, 24)), player);
+  food2 = new Food(int(random(0, 24)), int(random(0, 24)), player);
+  food3 = new Food(int(random(0, 24)), int(random(0, 24)), player);
+  food4 = new Food(int(random(0, 24)), int(random(0, 24)), player);
 }
 
 void draw()
@@ -30,10 +31,10 @@ void draw()
   clearBoard(); 
   updateEntities();
   drawBoard();
-  //resolveCollisions();
+  resolveCollisions();
   //updateEnemies(); 
   //keyPressed(); 
-  //isGameOver();
+  isGameOver();
 }
 
 void clearBoard()
@@ -67,6 +68,7 @@ void updateEntities()
     grid[enemy2.x][enemy2.y] = enemy2.type;
     grid[enemy3.x][enemy3.y] = enemy3.type;
     grid[enemy4.x][enemy4.y] = enemy4.type;
+
     grid[food1.x][food1.y] = food1.type;
     grid[food2.x][food2.y] = food2.type;
     grid[food3.x][food3.y] = food3.type;
@@ -101,10 +103,10 @@ color getColorFromType(int type)
     c = color(255, 0, 0);//enemy
     break;
   case 2: 
-    c = color(0, 255, 0);//food
+    c = color(0, 0, 255);//player
     break;
   case 3: 
-    c = color(0, 0, 255);//player
+    c = color(0, 255, 0);//food
     break;
   case 4: 
     c = color (0, 255, 255);
@@ -132,7 +134,7 @@ void printIntArray(int[][] arr)
 //}
 
 void isGameOver() {
-  if (player.health == 0) {
+  if (player.health <= -1) {
     background(0);
     textSize(60);
     fill(255);
@@ -141,6 +143,38 @@ void isGameOver() {
 } 
 
 void resolveCollisions() {
+  float pX = player.x;
+  float pY = player.y;
+
+  float e1X = enemy1.x;
+  float e1Y = enemy1.y;
+  float e2X = enemy2.x;
+  float e2Y = enemy2.y;
+  float e3X = enemy3.x;
+  float e3Y = enemy3.y;
+  float e4X = enemy4.x;
+  float e4Y = enemy4.y;
+
+  float f1X = food1.x;
+  float f1Y = food1.y;
+  float f2X = food2.x;
+  float f2Y = food2.y;
+  float f3X = food3.x;
+  float f3Y = food3.y;
+  float f4X = food4.x;
+  float f4Y = food4.y;
+
+  if (pX == e1X && pY == e1Y 
+    || pX == e2X && pY == e2Y 
+    || pX == e3X && pY == e3Y
+    || pX == e4X && pY == e4Y) {
+    player.takeDamage();
+  } else if (pX == f1X && pY == f1Y 
+    || pX == f2X && pY == f2Y
+    || pX == f3X && pY == f3Y
+    || pX == f4X && pY == f4Y) {
+    player.eat();
+  }
 }
 
 void keyPressed()
@@ -160,5 +194,13 @@ void keyPressed()
   if (keyCode == RIGHT)
   {
     player.x++;
+  }
+  if(player.health <= -1 && keyCode == ENTER){
+    player.health = 1000;
+    player.score = 0;
+    player.x = 0;
+    player.y = 0;
+    clearBoard();
+    drawBoard();
   }
 }
