@@ -16,7 +16,7 @@ class Enemy {
     int yDistance = Math.abs(player.y - y);
 
     // random chance (~25% chance) for at enemy flytter sig i en tilfældig retning. 
-    double rand = random(100);
+    double rand = random(0, 100);
     if (rand < 2) { //WHY DOES THIS WORK??
       if (xDistance > yDistance && player.x > x) {
         this.x++;
