@@ -1,16 +1,19 @@
-
-void updateEntities()
-{
+void updateEntities() {
   //here i use try so that when the inevitable moment when the player, enemies or food tries to go outside the grid
   try {//if any of this fails it is because something is trying to go outside the grid
+
     //this for loop goes through the foods array
     for (int i = 0; i < foods.size(); i++) {
+
       //puts the foods type(color) on their location
       grid[foods.get(i).x][foods.get(i).y] = foods.get(i).type;
+
       //calls a function that calls another function to make the foods move away from the player
       updateFoods();
+
       //if the player and the food is in the same place
       if (grid[player.x][player.y] == grid[foods.get(i).x][foods.get(i).y]) {
+
         //call the function that makes the score increse when they touch the player        
         resolveCollisions();
       }
@@ -21,12 +24,16 @@ void updateEntities()
 
     //the for loop below go through the enemies array 
     for (int i = 0; i < enemies.size(); i++) {
+
       //puts the enemies type(color) on their location
       grid[enemies.get(i).x][enemies.get(i).y] = enemies.get(i).type;
+
       //calls a function that calls another function to make the enemies move towards the player
       updateEnemies();
+
       //if an enemy is at the same place as player
       if (grid[player.x][player.y] == grid[enemies.get(i).x][enemies.get(i).y]) {
+
         //call the function that makes the health decrese when they touch the player
         resolveCollisions();
       }
@@ -34,7 +41,8 @@ void updateEntities()
   }
   //if someone tries to go outside the grid this function catches that error
   catch(ArrayIndexOutOfBoundsException e) {//player is outside the grid
-    println("You can´t move that way " + e);
+    //println("You can´t move that way " + e);
+
     //if the player goes outside the grid they will stay there until you move it the other way
     if (player.x < 0) { //if the player goes outside the grid
       player.x = 0;
@@ -57,6 +65,7 @@ void updateEntities()
       } else if (enemies.get(i).y > 24) {
         enemies.get(i).y = 24;
       }
+
       //makes the enemy move towards the player
       updateEnemies();
     }
@@ -72,6 +81,7 @@ void updateEntities()
       } else if (foods.get(i).y > 24) {
         foods.get(i).y = 24;
       }
+
       //makes the food move away from the player
       updateFoods();
     }
