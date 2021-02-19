@@ -1,7 +1,6 @@
 /*
 To do:
  find out why green moves differently than red
- get green to dissapear when blue eats it
  fix score
  fix health
  check if i can make it a 25% chance that enemy and food moves
@@ -51,8 +50,7 @@ void setup() {
   clearBoard();
 }
 
-void draw()
-{
+void draw() {
   //checking if the game is over, using my gameOver boolean
   if (!gameOver) {
     //if game is not over clear the board, update entities and draw the board with the player, food and enemies
@@ -60,7 +58,7 @@ void draw()
     updateEntities();
     drawBoard();
   } else {
-    //if the game is over show text
+    //if the game is over show game over text
     background(0);
     textSize(60);
     fill(255);
