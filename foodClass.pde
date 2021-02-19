@@ -21,7 +21,7 @@ class Food {
     }
 
     //no idea why this works
-    double rand = random(100);
+    double rand = random(0, 100);
 
     if (rand < 2) {
       if (xDistance > yDistance && player.x > x) {
