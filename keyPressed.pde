@@ -1,20 +1,15 @@
-void keyPressed()
-{
+void keyPressed() {
   //if you press one of the arrows the player moves
-  if (keyCode == UP)
-  {
+  if (keyCode == UP) {
     player.y--;
   }
-  if (keyCode == LEFT)
-  {
+  if (keyCode == LEFT) {
     player.x--;
   }
-  if (keyCode == DOWN)
-  {
+  if (keyCode == DOWN) {
     player.y++;
   }
-  if (keyCode == RIGHT)
-  {
+  if (keyCode == RIGHT) {
     player.x++;
   }
   //if the game is over and you press enter then it starts over
