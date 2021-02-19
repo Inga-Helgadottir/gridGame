@@ -14,12 +14,13 @@ class Enemy
 
   void MoveTowardsPlayer()
   {
+    //theese tell me how much space there is between the enemy and the player
     int xDistance = Math.abs(player.x - x);
     int yDistance = Math.abs(player.y - y);
 
     // random chance (~25% chance) for at enemy flytter sig i en tilfældig retning. 
-    int d = int(random(100));
-    if (d < 1) {
+    int rand = int(random(100));
+    if (rand < 2) {//WHY DOES THIS WORK??
       if (xDistance > yDistance && player.x > x) {
         this.x++;
       } else if (xDistance > yDistance && player.x < x) {
