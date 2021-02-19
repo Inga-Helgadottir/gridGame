@@ -10,228 +10,61 @@ To do:
 //enemies rykker sig kun efter at du har klikket på en af pilerne 
 //jeg ændrede keyPressed til at kigge på piler fordi det er nemmere for mig
 
+//makes it possible to make an array from classes
 import java.util.ArrayList;
 
-int size = 40;
+//background grid
 int[][] grid = new int[25][25];
+int size = 40;//size of boxes
 
+//calling all classes
 Player player;
+//making an array from classes
 ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 ArrayList<Food> foods = new ArrayList<Food>();
+
+//if health is >= 0 turns true
 boolean gameOver = false;
 
 void settings() {
+  //processing threw an error because the size object was in setup
   size(1001, 1001);
 }
 
 void setup() {
+  //calling player, enemies and food to the grid
   player = new Player(0, 0);
+
+  //the enemies start on the other end making the game easier
   enemies.add(new Enemy(22, 23, player));
   enemies.add(new Enemy(23, 23, player));
   enemies.add(new Enemy(23, 24, player));
   enemies.add(new Enemy(24, 24, player));
 
+  //food is placed randomly in a group
   foods.add(new Food(int(random(0, 24)), int(random(0, 24)), player)); 
   foods.add(new Food(int(random(0, 24)), int(random(0, 24)), player));
   foods.add(new Food(int(random(0, 24)), int(random(0, 24)), player));
   foods.add(new Food(int(random(0, 24)), int(random(0, 24)), player));
 
+  //makes the grid
   clearBoard();
 }
 
 void draw()
 {
-  if (!gameOver) {//checking if the game is over
+  //checking if the game is over, using my gameOver boolean
+  if (!gameOver) {
+    //if game is not over clear the board, update entities and draw the board with the player, food and enemies
     clearBoard(); 
     updateEntities();
     drawBoard();
-  } else {//if the game is over
+  } else {
+    //if the game is over show text
     background(0);
     textSize(60);
     fill(255);
-    text("   Game over! \nYour score is: " + player.score, 200, 1001/2);
-  }
-}
-
-
-void clearBoard()
-{
-  for (int x = 0; x < grid.length; x++)
-  {
-    for (int y = 0; y < grid[0].length; y++)
-    {
-      grid[x][y] = 0;
-    }
-  }
-}
-
-void drawBoard()
-{
-  for (int x = 0; x < grid.length; x++)
-  {
-    for (int y = 0; y < grid[0].length; y++)
-    {
-      fill(getColorFromType(grid[x][y]));
-      rect(x * size, y * size, size, size);
-    }
-  }
-}
-
-void updateEntities()
-{
-  try {
-    grid[player.x][player.y] = player.type;
-
-    for (int i = 0; i < enemies.size(); i++) {
-      grid[enemies.get(i).x][enemies.get(i).y] = enemies.get(i).type;
-      updateEnemies();
-      if (grid[player.x][player.y] == grid[enemies.get(i).x][enemies.get(i).y]) {
-        resolveCollisions();
-      }
-    }
-    for (int i = 0; i < foods.size(); i++) {
-      grid[foods.get(i).x][foods.get(i).y] = foods.get(i).type;
-      updateFoods();
-      if (grid[player.x][player.y] == grid[foods.get(i).x][foods.get(i).y]) {
-        resolveCollisions();
-      }
-    }
-  }
-  catch(ArrayIndexOutOfBoundsException e) {//player is outside the grid
-    println("You can´t move that way " + e);
-    if (player.x < 0) { //if the player goes outside the grid
-      player.x = 0;
-    } else if (player.x > 24) {
-      player.x = 24;
-    } else if (player.y < 0) {
-      player.y = 0;
-    } else if (player.y > 24) {
-      player.y = 24;
-    }
-
-    for (int i = 0; i < enemies.size(); i++) {//if the enemy goes outside the grid
-      if (enemies.get(i).x < 0) {
-        enemies.get(i).x = 0;
-      } else if (enemies.get(i).x > 24) {
-        enemies.get(i).x = 24;
-      } else if (enemies.get(i).y < 0) {
-        enemies.get(i).y = 0;
-      } else if (enemies.get(i).y > 24) {
-        enemies.get(i).y = 24;
-      }
-      updateEnemies();
-    }
-
-    for (int i = 0; i < foods.size(); i++) {//if the enemy goes outside the grid
-      if (foods.get(i).x < 0) {
-        foods.get(i).x = 0;
-      } else if (foods.get(i).x > 24) {
-        foods.get(i).x = 24;
-      } else if (foods.get(i).y < 0) {
-        foods.get(i).y = 0;
-      } else if (foods.get(i).y > 24) {
-        foods.get(i).y = 24;
-      }
-      updateFoods();
-    }
-  }
-}
-
-
-color getColorFromType(int type) 
-{
-  color c = color(255);
-
-  switch(type)
-  {
-  case 0: 
-    c = color(127);//background
-    break;
-  case 1: 
-    c = color(255, 0, 0);//enemy
-    break;
-  case 2: 
-    c = color(0, 0, 255);//player
-    break;
-  case 3: 
-    c = color(0, 255, 0);//food
-    break;
-  default:
-    c = color(127);
-    break;
-  }    
-  return c;
-}
-
-void printIntArray(int[][] arr) 
-{
-  for (int x = 0; x < arr.length; x++)
-  {
-    for (int y = 0; y < arr[0].length; y++) 
-    {
-      System.out.print(arr[x][y] + ", ");
-    }
-  }
-}
-
-void updateEnemies() {
-  for (int i = 0; i < enemies.size(); i++) {
-    enemies.get(i).MoveTowardsPlayer();
-  }
-}
-
-void updateFoods(){
-  for (int i = 0; i < foods.size(); i++) {
-    foods.get(i).MoveAwayFromPlayer();
-  }
-}
-
-void resolveCollisions() {      
-  for (int i = 0; i < foods.size(); i++) {
-    if (grid[foods.get(i).x][foods.get(i).y] == grid[player.x][player.y]) {
-      player.eat();//increase score
-    }
-  }
-
-  for (int i = 0; i < enemies.size(); i++) {
-    if (grid[enemies.get(i).x][enemies.get(i).y] == grid[player.x][player.y]) {
-      player.takeDamage();//decrease health
-      isGameOver();
-    }
-  }
-}
-
-void isGameOver() {
-  if (player.health <= 0) {
-    gameOver = true;
-  }
-} 
-
-void keyPressed()
-{
-  if (keyCode == UP)
-  {
-    player.y--;
-  }
-  if (keyCode == LEFT)
-  {
-    player.x--;
-  }
-  if (keyCode == DOWN)
-  {
-    player.y++;
-  }
-  if (keyCode == RIGHT)
-  {
-    player.x++;
-  }
-  if (player.health <= 0 && keyCode == ENTER) {//restart game
-    clearBoard();
-    drawBoard();
-    player.health = 100;
-    player.score = 0;
-    player.x = 0;
-    player.y = 0;
-    gameOver = false;
+    text("    Game over!", 200, 1001/2);
+    text(" Your score is: " + player.score, 200, 1001/3);
   }
 }
