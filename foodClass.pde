@@ -15,10 +15,15 @@ class Food
   {
     int xDistance = Math.abs(player.x - x);
     int yDistance = Math.abs(player.y - y);
-
-    // random chance (~25% chance) for at enemy flytter sig i en tilfældig retning. 
-    double d = random(100);
-    if (d < 1) {
+    
+    if(this.x == player.x && this.y == player.y){
+      this.x = int(random(0, 24));
+      this.y = int(random(0, 24));
+    }
+    
+    double rand = random(100);
+    
+    if (rand < 2) {
       if (xDistance > yDistance && player.x > x) {
         this.x--;
       } else if (xDistance > yDistance && player.x < x) {
