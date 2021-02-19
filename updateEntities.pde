@@ -8,19 +8,19 @@ void updateEntities() {
       //puts the foods type(color) on their location
       grid[foods.get(i).x][foods.get(i).y] = foods.get(i).type;
 
-      //calls a function that calls another function to make the foods move away from the player
-      updateFoods();
-
-      //if the player and the food is in the same place
-      if (grid[player.x][player.y] == grid[foods.get(i).x][foods.get(i).y]) {
-
-        //call the function that makes the score increse when they touch the player        
-        resolveCollisions();
-      }
     }
-
+    
+    //call the function that makes the score increse when they touch the player   
+    resolveCollisions();
+    
     //i put the player here so the player will appear on top of food and below enemies
     grid[player.x][player.y] = player.type;
+
+    //makes the food move away from the player
+    updateFoods();
+      
+   //calls a function that calls another function to make the enemies move towards the player
+    updateEnemies();
 
     //the for loop below go through the enemies array 
     for (int i = 0; i < enemies.size(); i++) {
@@ -28,17 +28,9 @@ void updateEntities() {
       //puts the enemies type(color) on their location
       grid[enemies.get(i).x][enemies.get(i).y] = enemies.get(i).type;
 
-      //calls a function that calls another function to make the enemies move towards the player
-      updateEnemies();
-
-      //if an enemy is at the same place as player
-      if (grid[player.x][player.y] == grid[enemies.get(i).x][enemies.get(i).y]) {
-
-        //call the function that makes the health decrese when they touch the player
-        resolveCollisions();
-      }
     }
   }
+  
   //if someone tries to go outside the grid this function catches that error
   catch(ArrayIndexOutOfBoundsException e) {//player is outside the grid
     //println("You can´t move that way " + e);
@@ -84,6 +76,7 @@ void updateEntities() {
 
       //makes the food move away from the player
       updateFoods();
+      resolveCollisions();
     }
   }
 }
