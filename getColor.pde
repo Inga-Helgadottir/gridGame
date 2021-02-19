@@ -1,6 +1,5 @@
 //checks what color goes where using the type in every class and the background
-color getColorFromType(int type) 
-{
+color getColorFromType(int type) {
   //the function needs a default type to work right
   color c = color(255);
 
