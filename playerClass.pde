@@ -13,13 +13,14 @@ class Player
     health = 100;
   }
 
-
   void takeDamage()
   {
     health --;
+    println(health + " health");
   }
 
   void eat() {
     score++;
+    println(score+ " score");
   }
 }
