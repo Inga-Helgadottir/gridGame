@@ -32,7 +32,7 @@ void settings() {
 
 void setup() {
   //calling player, enemies and food to the grid
-  player = new Player(0, 0);
+  player = new Player(5, 5);
 
   //the enemies start on the other end making the game easier
   enemies.add(new Enemy(22, 23, player));
@@ -48,6 +48,8 @@ void setup() {
 
   //makes the grid
   clearBoard();
+  
+  
 }
 
 void draw() {
