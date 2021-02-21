@@ -20,10 +20,10 @@ class Food {
       this.y = int(random(0, 24));
     }
 
-    //no idea why this works
+    //can´t get it to work any other way
     double rand = random(0, 100);
 
-    if (rand < 2) {
+    if (rand < 5) {//2 = easy, 5 = medium, 10 = hard
       if (xDistance > yDistance && player.x > x) {
         this.x--;
       } else if (xDistance > yDistance && player.x < x) {
