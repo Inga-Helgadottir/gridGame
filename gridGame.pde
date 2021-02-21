@@ -1,10 +1,3 @@
-/*
-To do:
- find out why green moves differently than red
- fix score
- fix health
- check if i can make it a 25% chance that enemy and food moves
- */
 //før du kan rykke playeren skal du klikke på vinduet
 //enemies rykker sig kun efter at du har klikket på en af pilerne 
 //jeg ændrede keyPressed til at kigge på piler fordi det er nemmere for mig
@@ -32,7 +25,7 @@ void settings() {
 
 void setup() {
   //calling player, enemies and food to the grid
-  player = new Player(5, 5);
+  player = new Player(0, 0);
 
   //the enemies start on the other end making the game easier
   enemies.add(new Enemy(22, 23, player));
@@ -48,8 +41,6 @@ void setup() {
 
   //makes the grid
   clearBoard();
-  
-  
 }
 
 void draw() {
